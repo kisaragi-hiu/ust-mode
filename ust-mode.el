@@ -1,7 +1,7 @@
 ;;; ust-mode.el --- Major mode for UTAU projects -*- lexical-binding: t -*-
 
 ;; Author: Kisaragi Hiu
-;; Version: 0.1.1
+;; Version: 0.1.2
 ;; Package-Requires: ((emacs "24.3"))
 ;; Homepage: https://kisaragi-hiu.com/projects/ust-mode
 ;; Keywords: languages
@@ -54,7 +54,7 @@ contains a dot, to main.ust."
 ;;;; Major mode
 
 (defconst ust-mode-syntax-table
-  (let ((table conf-mode-syntax-table))
+  (let ((table (make-syntax-table conf-mode-syntax-table)))
     ;; # and ; are both not comments
     (modify-syntax-entry ?# "_" table)
     (modify-syntax-entry ?\; "_" table)
@@ -74,9 +74,9 @@ contains a dot, to main.ust."
 ;;;###autoload
 (define-derived-mode ust-mode conf-mode "UTAU Sequence Text"
   "Major mode for editing UTAU project files."
-  (set (make-local-variable 'font-lock-defaults)
-       `((ust-mode-font-lock-keywords)
-         nil t nil nil))
+  (setq-local font-lock-defaults
+              `((ust-mode-font-lock-keywords)
+                nil t nil nil))
   (add-hook 'before-save-hook #'ust-mode-normalize-paths nil t))
 
 ;;;; Provide
