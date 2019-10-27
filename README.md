@@ -4,7 +4,7 @@ An Emacs major mode for editing [UTAU Sequence Text](https://w.atwiki.jp/utaou/?
 
 This is intended to work alongside UTAU itself, as there are some tasks that can be done faster with a text editor, such as copy-and-pasting large sections of the project.
 
-![screenshot](https://kisaragi-hiu.com/static/emacs-ust-mode.png)
+<img src="https://kisaragi-hiu.com/static/emacs-ust-mode.png" width="200">
 
 Syntax highlighting is provided, as well as a command, `ust-mode-normalize-paths`, to “normalize” paths within a UST: assuming the UST we're editing is named `main.ust`, it sets the output file to `main.wav`, caching directory to `main.cache`, and if the project name contains a dot (meaning it’s probably named after the file itself), to `main.ust`. This command is run everytime the file is saved, though I might make it a user option.
 
