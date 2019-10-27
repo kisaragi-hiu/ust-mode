@@ -1,7 +1,7 @@
 ;;; ust-mode.el --- Major mode for UTAU projects -*- lexical-binding: t -*-
 
 ;; Author: Kisaragi Hiu
-;; Version: 0.1.0
+;; Version: 0.1.1
 ;; Package-Requires: ((emacs "24.3"))
 ;; Homepage: https://kisaragi-hiu.com/projects/ust-mode
 ;; Keywords: languages
@@ -33,7 +33,7 @@
 
 ;;;; Commands
 
-(defun ust-normalize-paths ()
+(defun ust-mode-normalize-paths ()
   "Normalize paths in current buffer.
 
 Assuming the UST we're editing is named main.ust, this sets
@@ -77,7 +77,7 @@ contains a dot, to main.ust."
   (set (make-local-variable 'font-lock-defaults)
        `((ust-mode-font-lock-keywords)
          nil t nil nil))
-  (add-hook 'before-save-hook #'ust-normalize-paths nil t))
+  (add-hook 'before-save-hook #'ust-mode-normalize-paths nil t))
 
 ;;;; Provide
 
