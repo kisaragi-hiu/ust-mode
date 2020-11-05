@@ -1,7 +1,7 @@
 ;;; ust-mode.el --- Major mode for UTAU projects -*- lexical-binding: t -*-
 
 ;; Author: Kisaragi Hiu
-;; Version: 0.1.2
+;; Version: 0.2.0
 ;; Package-Requires: ((emacs "24.3"))
 ;; Homepage: https://kisaragi-hiu.com/projects/ust-mode
 ;; Keywords: languages
@@ -33,23 +33,53 @@
 
 ;;;; Commands
 
-(defun ust-mode-normalize-paths ()
-  "Normalize paths in current buffer.
+(defun ust-mode-normalize-paths (&optional buffer)
+  "Normalize paths in BUFFER.
 
 Assuming the UST we're editing is named main.ust, this sets
 OutFile to main.wav, CacheDir to main.cache, and if ProjectName
 contains a dot, to main.ust."
   (interactive)
-  (save-excursion
-    (setf (point) (point-min))
-    (while (re-search-forward
-            (rx bol (or "OutFile" "CacheDir" "ProjectName") "="
-                (group (zero-or-more any))
-                "." (or "wav" "cache" "ust")
-                eol)
-            nil t)
-      (replace-match (file-name-base buffer-file-name)
-                     nil t nil 1))))
+  (with-current-buffer buffer
+    (save-excursion
+      (setf (point) (point-min))
+      (while (re-search-forward
+              (rx bol (or "OutFile" "CacheDir" "ProjectName") "="
+                  (group (zero-or-more any))
+                  "." (or "wav" "cache" "ust")
+                  eol)
+              nil t)
+        (replace-match (file-name-base buffer-file-name)
+                       nil t nil 1)))))
+
+(defun ust-mode-normalize-paths-in-file (file)
+  "Normalize paths in FILE.
+
+Suitable for use in eshell:
+
+mapc #'ust-mode-normalize-paths-in-file *.ust"
+  (interactive "FNormalize paths in UST File: ")
+  (with-temp-file file
+    (insert-file-contents file)
+    (ust-mode-normalize-paths)))
+
+(defun ust-mode-insert-notes-from-text (text)
+  "Insert each character in TEXT as UTAU notes."
+  (interactive "MText: ")
+  (end-of-line)
+  (mapc
+   (lambda (char)
+     (insert
+      ;; UTAU will deal with the note ID itself
+      (format "
+[#0000]
+Length=240
+Lyric=%c
+NoteNum=60
+Intensity=100
+Modulation=0
+PreUtterance=")))
+   text))
 
 ;;;; Major mode
 
