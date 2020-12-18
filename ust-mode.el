@@ -30,10 +30,11 @@
 ;;; Code:
 
 (require 'conf-mode)
+(require 'cl-lib)
 
 ;;;; Commands
 
-(defun ust-mode-normalize-paths (&optional buffer)
+(cl-defun ust-mode-normalize-paths (&optional (buffer (current-buffer)))
   "Normalize paths in BUFFER.
 
 Assuming the UST we're editing is named main.ust, this sets
