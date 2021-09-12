@@ -38,16 +38,16 @@
   "Normalize paths in BUFFER.
 
 Assuming the UST we're editing is named main.ust, this sets
-OutFile to main.wav, CacheDir to main.cache, and if ProjectName
-contains a dot, to main.ust."
+OutFile to main.wav, CacheDir to main.cache, and ProjectName to
+main.ust."
   (interactive)
   (with-current-buffer buffer
     (save-excursion
       (setf (point) (point-min))
       (while (re-search-forward
               (rx bol (or "OutFile" "CacheDir" "ProjectName") "="
-                  (group (zero-or-more any))
-                  "." (or "wav" "cache" "ust")
+                  (group (*? any))
+                  (opt "." (or "wav" "cache" "ust"))
                   eol)
               nil t)
         (replace-match (file-name-base buffer-file-name)
