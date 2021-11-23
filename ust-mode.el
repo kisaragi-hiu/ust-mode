@@ -1,7 +1,7 @@
 ;;; ust-mode.el --- Major mode for UTAU projects -*- lexical-binding: t -*-
 
 ;; Author: Kisaragi Hiu
-;; Version: 0.2.0
+;; Version: 0.3.0
 ;; Package-Requires: ((emacs "24.3"))
 ;; Homepage: https://kisaragi-hiu.com/projects/ust-mode
 ;; Keywords: languages
@@ -34,24 +34,22 @@
 
 ;;;; Commands
 
-(cl-defun ust-mode-normalize-paths (&optional (buffer (current-buffer)))
-  "Normalize paths in BUFFER.
+(cl-defun ust-mode-normalize-paths (&optional (path (buffer-file-name)))
+  "Normalize paths in current buffer to PATH.
 
 Assuming the UST we're editing is named main.ust, this sets
 OutFile to main.wav, CacheDir to main.cache, and ProjectName to
 main.ust."
   (interactive)
-  (with-current-buffer buffer
-    (save-excursion
-      (setf (point) (point-min))
-      (while (re-search-forward
-              (rx bol (or "OutFile" "CacheDir" "ProjectName") "="
-                  (group (*? any))
-                  (opt "." (or "wav" "cache" "ust"))
-                  eol)
-              nil t)
-        (replace-match (file-name-base buffer-file-name)
-                       nil t nil 1)))))
+  (save-excursion
+    (setf (point) (point-min))
+    (while (re-search-forward
+            (rx bol (or "OutFile" "CacheDir" "ProjectName") "="
+                (group (*? any))
+                (opt "." (or "wav" "cache" "ust"))
+                eol)
+            nil t)
+      (replace-match (file-name-base path) nil t nil 1))))
 
 (defun ust-mode-normalize-paths-in-file (file)
   "Normalize paths in FILE.
@@ -62,7 +60,7 @@ mapc #'ust-mode-normalize-paths-in-file *.ust"
   (interactive "FNormalize paths in UST File: ")
   (with-temp-file file
     (insert-file-contents file)
-    (ust-mode-normalize-paths)))
+    (ust-mode-normalize-paths file)))
 
 (defun ust-mode-insert-notes-from-text (text)
   "Insert each character in TEXT as UTAU notes."
