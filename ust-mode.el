@@ -80,6 +80,32 @@ Modulation=0
 PreUtterance=")))
    text))
 
+(defun ust-mode-skeleton ()
+  "Insert a template such that this buffer is a valid UST when saved."
+  (interactive)
+  (insert
+   "[#VERSION]
+UST Version1.2
+[#SETTING]
+Tempo=150.00
+Tracks=1
+ProjectName=main
+VoiceDir=%VOICE%闇音レンリ・連続音Ver1.5
+OutFile=main.wav
+CacheDir=main.cache
+Tool1=wavtool.exe
+Tool2=tool2/tn_fnds.exe
+Mode2=True
+[#0000]
+Length=480
+Lyric=R
+NoteNum=60
+PreUtterance=
+[#TRACKEND]")
+  (set-buffer-file-coding-system
+   'japanese-shift-jis-dos)
+  (save-buffer))
+
 ;;;; Major mode
 
 (defconst ust-mode-syntax-table
@@ -106,6 +132,8 @@ PreUtterance=")))
   (setq-local font-lock-defaults
               `((ust-mode-font-lock-keywords)
                 nil t nil nil))
+  ;; (when (eql 0 (buffer-size))
+  ;;   (ust-mode-skeleton))
   (add-hook 'before-save-hook #'ust-mode-normalize-paths nil t))
 
 ;;;; Provide
