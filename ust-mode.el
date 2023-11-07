@@ -42,7 +42,7 @@ OutFile to main.wav, CacheDir to main.cache, and ProjectName to
 main.ust."
   (interactive)
   (save-excursion
-    (setf (point) (point-min))
+    (goto-char (point-min))
     (while (re-search-forward
             (rx bol (or "OutFile" "CacheDir" "ProjectName") "="
                 (group (*? any))
