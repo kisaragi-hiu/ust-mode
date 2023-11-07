@@ -57,7 +57,7 @@ main.ust."
 
 Suitable for use in eshell:
 
-mapc #'ust-mode-normalize-paths-in-file *.ust"
+mapc #\\='ust-mode-normalize-paths-in-file *.ust"
   (interactive "FNormalize paths in UST File: ")
   (with-temp-file file
     (insert-file-contents file)
