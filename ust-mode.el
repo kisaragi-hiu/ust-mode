@@ -51,6 +51,7 @@ main.ust."
             nil t)
       (replace-match (file-name-base path) nil t nil 1))))
 
+;;;###autoload
 (defun ust-mode-normalize-paths-in-file (file)
   "Normalize paths in FILE.
 
