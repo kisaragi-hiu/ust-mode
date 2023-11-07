@@ -49,7 +49,7 @@ main.ust."
                 (opt "." (or "wav" "cache" "ust"))
                 eol)
             nil t)
-      (replace-match (file-name-base path) nil t nil 1))))
+      (replace-match (file-name-base path) t t nil 1))))
 
 ;;;###autoload
 (defun ust-mode-normalize-paths-in-file (file)
