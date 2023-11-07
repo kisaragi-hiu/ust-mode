@@ -78,7 +78,8 @@ Lyric=%c
 NoteNum=60
 Intensity=100
 Modulation=0
-PreUtterance=")))
+PreUtterance="
+              char)))
    text))
 
 (defun ust-mode-skeleton ()
